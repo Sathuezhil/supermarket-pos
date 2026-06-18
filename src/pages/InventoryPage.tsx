@@ -66,7 +66,7 @@ export function InventoryPage() {
       </div>
 
       {lowStock.length > 0 && (
-        <div className="mb-6 card border-amber-300 bg-amber-50 p-4">
+        <div className="mb-6 card border-amber-200 bg-amber-50 p-4">
           <h3 className="flex items-center gap-2 font-semibold text-amber-800">
             <AlertTriangle className="h-5 w-5" />
             Low Stock Alert
@@ -80,7 +80,7 @@ export function InventoryPage() {
                 </div>
                 <div className="text-right">
                   <p className="text-sm font-bold text-red-600">{p.stock} {p.unit}</p>
-                  <p className="text-xs text-slate-400">Min: {p.minStock}</p>
+                  <p className="text-xs text-slate-500">Min: {p.minStock}</p>
                 </div>
               </div>
             ))}
@@ -89,7 +89,7 @@ export function InventoryPage() {
       )}
 
       <div className="mb-4 relative">
-        <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
+        <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-500" />
         <input
           type="text"
           value={search}
@@ -107,12 +107,12 @@ export function InventoryPage() {
           <table className="w-full text-sm">
             <thead className="bg-slate-50">
               <tr>
-                <th className="px-4 py-2 text-left font-medium text-slate-600">Product</th>
-                <th className="px-4 py-2 text-left font-medium text-slate-600">Category</th>
-                <th className="px-4 py-2 text-right font-medium text-slate-600">In Stock</th>
-                <th className="px-4 py-2 text-right font-medium text-slate-600">Min Level</th>
-                <th className="px-4 py-2 text-center font-medium text-slate-600">Status</th>
-                <th className="px-4 py-2 text-center font-medium text-slate-600">Action</th>
+                <th className="px-4 py-2 text-left font-medium text-slate-500">Product</th>
+                <th className="px-4 py-2 text-left font-medium text-slate-500">Category</th>
+                <th className="px-4 py-2 text-right font-medium text-slate-500">In Stock</th>
+                <th className="px-4 py-2 text-right font-medium text-slate-500">Min Level</th>
+                <th className="px-4 py-2 text-center font-medium text-slate-500">Status</th>
+                <th className="px-4 py-2 text-center font-medium text-slate-500">Action</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100">
@@ -135,7 +135,7 @@ export function InventoryPage() {
                       )}
                     </td>
                     <td className="px-4 py-2.5 text-center">
-                      <button onClick={() => openAdjust(p.id)} className="text-xs text-brand-600 hover:underline">
+                      <button onClick={() => openAdjust(p.id)} className="text-xs text-emerald-600 hover:underline">
                         Adjust
                       </button>
                     </td>
@@ -154,9 +154,9 @@ export function InventoryPage() {
             {stockMovements.slice(0, 20).map((m) => (
               <div key={m.id} className="flex items-start gap-3 text-sm">
                 <div className={`mt-0.5 rounded-full p-1 ${
-                  m.type === 'in' ? 'bg-green-100 text-green-600' :
+                  m.type === 'in' ? 'bg-emerald-100 text-emerald-600' :
                   m.type === 'out' ? 'bg-red-100 text-red-600' :
-                  'bg-amber-100 text-amber-600'
+                  'bg-amber-100 text-amber-700'
                 }`}>
                   {m.type === 'in' ? <ArrowDownToLine className="h-3.5 w-3.5" /> :
                    m.type === 'out' ? <ArrowUpFromLine className="h-3.5 w-3.5" /> :
@@ -165,9 +165,9 @@ export function InventoryPage() {
                 <div className="flex-1 min-w-0">
                   <p className="font-medium truncate">{m.productName}</p>
                   <p className="text-xs text-slate-500">{m.reason}</p>
-                  <p className="text-xs text-slate-400">{new Date(m.date).toLocaleString('en-LK')}</p>
+                  <p className="text-xs text-slate-500">{new Date(m.date).toLocaleString('en-LK')}</p>
                 </div>
-                <span className={`font-semibold ${m.type === 'in' ? 'text-green-600' : 'text-red-600'}`}>
+                <span className={`font-semibold ${m.type === 'in' ? 'text-emerald-600' : 'text-red-600'}`}>
                   {m.type === 'in' ? '+' : '-'}{m.quantity}
                 </span>
               </div>
@@ -195,7 +195,7 @@ export function InventoryPage() {
                   key={t}
                   onClick={() => setAdjustType(t)}
                   className={`rounded-lg border-2 p-2 text-sm capitalize ${
-                    adjustType === t ? 'border-brand-500 bg-brand-50' : 'border-slate-200'
+                    adjustType === t ? 'border-emerald-500 bg-emerald-50' : 'border-slate-200'
                   }`}
                 >
                   {t === 'in' ? 'Stock In' : t === 'out' ? 'Stock Out' : 'Adjustment'}

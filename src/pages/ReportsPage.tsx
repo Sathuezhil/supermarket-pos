@@ -16,14 +16,23 @@ import {
 import { TrendingUp, DollarSign, Receipt, Package } from 'lucide-react';
 import { useApp } from '../store/AppContext';
 import { PageHeader, StatCard, formatLKR } from '../components/ui';
+import { getEmptyDailySale } from '../lib/appStorage';
 
 const COLORS = ['#22c55e', '#3b82f6', '#f97316', '#ef4444'];
+
+function marginPercent(profit: number, revenue: number): string {
+  if (revenue <= 0) return '0.0';
+  return ((profit / revenue) * 100).toFixed(1);
+}
 
 export function ReportsPage() {
   const { dailySales, products, bills } = useApp();
   const [activeTab, setActiveTab] = useState<'sales' | 'profit' | 'stock'>('sales');
 
-  const today = dailySales[dailySales.length - 1];
+  const todayDate = new Date().toISOString().slice(0, 10);
+  const today =
+    dailySales.find((d) => d.date === todayDate) ??
+    (dailySales.length > 0 ? dailySales[dailySales.length - 1] : getEmptyDailySale(todayDate));
   const weekRevenue = dailySales.reduce((s, d) => s + d.revenue, 0);
   const weekProfit = dailySales.reduce((s, d) => s + d.profit, 0);
   const weekBills = dailySales.reduce((s, d) => s + d.bills, 0);
@@ -73,7 +82,7 @@ export function ReportsPage() {
         <StatCard
           title="Today's Profit"
           value={formatLKR(today.profit)}
-          subtitle={`${((today.profit / today.revenue) * 100).toFixed(1)}% margin`}
+          subtitle={`${marginPercent(today.profit, today.revenue)}% margin`}
           icon={<TrendingUp className="h-6 w-6" />}
           color="blue"
         />
@@ -87,7 +96,7 @@ export function ReportsPage() {
         <StatCard
           title="Week Profit"
           value={formatLKR(weekProfit)}
-          subtitle={`${((weekProfit / weekRevenue) * 100).toFixed(1)}% margin`}
+          subtitle={`${marginPercent(weekProfit, weekRevenue)}% margin`}
           icon={<Package className="h-6 w-6" />}
           color="orange"
         />
@@ -100,8 +109,8 @@ export function ReportsPage() {
             onClick={() => setActiveTab(tab.id)}
             className={`px-4 py-2.5 text-sm font-medium border-b-2 transition-colors ${
               activeTab === tab.id
-                ? 'border-brand-600 text-brand-700'
-                : 'border-transparent text-slate-500 hover:text-slate-700'
+                ? 'border-emerald-600 text-emerald-700'
+                : 'border-transparent text-slate-500 hover:text-slate-300'
             }`}
           >
             {tab.label}
@@ -155,12 +164,12 @@ export function ReportsPage() {
               <table className="w-full text-sm">
                 <thead className="bg-slate-50">
                   <tr>
-                    <th className="px-4 py-2 text-left font-medium text-slate-600">Date</th>
-                    <th className="px-4 py-2 text-right font-medium text-slate-600">Bills</th>
-                    <th className="px-4 py-2 text-right font-medium text-slate-600">Revenue</th>
-                    <th className="px-4 py-2 text-right font-medium text-slate-600">Cash</th>
-                    <th className="px-4 py-2 text-right font-medium text-slate-600">Card</th>
-                    <th className="px-4 py-2 text-right font-medium text-slate-600">QR</th>
+                    <th className="px-4 py-2 text-left font-medium text-slate-500">Date</th>
+                    <th className="px-4 py-2 text-right font-medium text-slate-500">Bills</th>
+                    <th className="px-4 py-2 text-right font-medium text-slate-500">Revenue</th>
+                    <th className="px-4 py-2 text-right font-medium text-slate-500">Cash</th>
+                    <th className="px-4 py-2 text-right font-medium text-slate-500">Card</th>
+                    <th className="px-4 py-2 text-right font-medium text-slate-500">QR</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-100">
@@ -187,12 +196,12 @@ export function ReportsPage() {
               <table className="w-full text-sm">
                 <thead className="bg-slate-50">
                   <tr>
-                    <th className="px-4 py-2 text-left font-medium text-slate-600">Bill No</th>
-                    <th className="px-4 py-2 text-left font-medium text-slate-600">Cashier</th>
-                    <th className="px-4 py-2 text-right font-medium text-slate-600">Items</th>
-                    <th className="px-4 py-2 text-right font-medium text-slate-600">Total</th>
-                    <th className="px-4 py-2 text-left font-medium text-slate-600">Payment</th>
-                    <th className="px-4 py-2 text-left font-medium text-slate-600">Time</th>
+                    <th className="px-4 py-2 text-left font-medium text-slate-500">Bill No</th>
+                    <th className="px-4 py-2 text-left font-medium text-slate-500">Cashier</th>
+                    <th className="px-4 py-2 text-right font-medium text-slate-500">Items</th>
+                    <th className="px-4 py-2 text-right font-medium text-slate-500">Total</th>
+                    <th className="px-4 py-2 text-left font-medium text-slate-500">Payment</th>
+                    <th className="px-4 py-2 text-left font-medium text-slate-500">Time</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-100">
@@ -236,11 +245,11 @@ export function ReportsPage() {
             <table className="w-full text-sm">
               <thead className="bg-slate-50">
                 <tr>
-                  <th className="px-4 py-2 text-left font-medium text-slate-600">Date</th>
-                  <th className="px-4 py-2 text-right font-medium text-slate-600">Revenue</th>
-                  <th className="px-4 py-2 text-right font-medium text-slate-600">Profit</th>
-                  <th className="px-4 py-2 text-right font-medium text-slate-600">Margin %</th>
-                  <th className="px-4 py-2 text-right font-medium text-slate-600">Avg Bill</th>
+                  <th className="px-4 py-2 text-left font-medium text-slate-500">Date</th>
+                  <th className="px-4 py-2 text-right font-medium text-slate-500">Revenue</th>
+                  <th className="px-4 py-2 text-right font-medium text-slate-500">Profit</th>
+                  <th className="px-4 py-2 text-right font-medium text-slate-500">Margin %</th>
+                  <th className="px-4 py-2 text-right font-medium text-slate-500">Avg Bill</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100">
@@ -248,9 +257,11 @@ export function ReportsPage() {
                   <tr key={d.date} className="hover:bg-slate-50">
                     <td className="px-4 py-2">{d.date}</td>
                     <td className="px-4 py-2 text-right">{formatLKR(d.revenue)}</td>
-                    <td className="px-4 py-2 text-right font-medium text-green-600">{formatLKR(d.profit)}</td>
-                    <td className="px-4 py-2 text-right">{((d.profit / d.revenue) * 100).toFixed(1)}%</td>
-                    <td className="px-4 py-2 text-right text-slate-500">{formatLKR(d.revenue / d.bills)}</td>
+                    <td className="px-4 py-2 text-right font-medium text-emerald-600">{formatLKR(d.profit)}</td>
+                    <td className="px-4 py-2 text-right">{marginPercent(d.profit, d.revenue)}%</td>
+                    <td className="px-4 py-2 text-right text-slate-500">
+                      {formatLKR(d.bills > 0 ? d.revenue / d.bills : 0)}
+                    </td>
                   </tr>
                 ))}
               </tbody>
@@ -258,9 +269,11 @@ export function ReportsPage() {
                 <tr>
                   <td className="px-4 py-2">Week Total</td>
                   <td className="px-4 py-2 text-right">{formatLKR(weekRevenue)}</td>
-                  <td className="px-4 py-2 text-right text-green-600">{formatLKR(weekProfit)}</td>
-                  <td className="px-4 py-2 text-right">{((weekProfit / weekRevenue) * 100).toFixed(1)}%</td>
-                  <td className="px-4 py-2 text-right text-slate-500">{formatLKR(weekRevenue / weekBills)}</td>
+                  <td className="px-4 py-2 text-right text-emerald-600">{formatLKR(weekProfit)}</td>
+                  <td className="px-4 py-2 text-right">{marginPercent(weekProfit, weekRevenue)}%</td>
+                  <td className="px-4 py-2 text-right text-slate-500">
+                    {formatLKR(weekBills > 0 ? weekRevenue / weekBills : 0)}
+                  </td>
                 </tr>
               </tfoot>
             </table>
@@ -290,10 +303,10 @@ export function ReportsPage() {
             <table className="w-full text-sm">
               <thead className="bg-slate-50">
                 <tr>
-                  <th className="px-4 py-2 text-left font-medium text-slate-600">Category</th>
-                  <th className="px-4 py-2 text-right font-medium text-slate-600">Total Units</th>
-                  <th className="px-4 py-2 text-right font-medium text-slate-600">Stock Value</th>
-                  <th className="px-4 py-2 text-right font-medium text-slate-600">Products</th>
+                  <th className="px-4 py-2 text-left font-medium text-slate-500">Category</th>
+                  <th className="px-4 py-2 text-right font-medium text-slate-500">Total Units</th>
+                  <th className="px-4 py-2 text-right font-medium text-slate-500">Stock Value</th>
+                  <th className="px-4 py-2 text-right font-medium text-slate-500">Products</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100">

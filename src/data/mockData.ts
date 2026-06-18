@@ -1,4 +1,4 @@
-import type { Product, Bill, StaffUser, Shift, StockMovement, DailySale } from '../types';
+import type { Product, Bill, StaffUser, Shift, StockMovement, DailySale, Customer } from '../types';
 
 export const STORE_INFO = {
   name: 'Lanka Supermarket',
@@ -40,6 +40,13 @@ export const initialShifts: Shift[] = [
 ];
 
 export const initialBills: Bill[] = [];
+
+export const initialCustomers: Customer[] = [
+  { id: 'c1', phone: '771234567', fullName: 'Sunil Wickramasinghe', email: 'sunil@email.lk', loyaltyPoints: 245, totalVisits: 18, totalSpent: 24500, joinedAt: '2025-03-10' },
+  { id: 'c2', phone: '772345678', fullName: 'Priya Fernando', email: 'priya@email.lk', loyaltyPoints: 520, totalVisits: 32, totalSpent: 52000, joinedAt: '2024-11-05' },
+  { id: 'c3', phone: '773456789', fullName: 'Rajesh Kumar', loyaltyPoints: 85, totalVisits: 7, totalSpent: 8500, joinedAt: '2026-01-20' },
+  { id: 'c4', phone: '774567890', fullName: 'Dilani Silva', email: 'dilani@email.lk', loyaltyPoints: 1200, totalVisits: 45, totalSpent: 120000, joinedAt: '2024-06-15' },
+];
 
 export const initialStockMovements: StockMovement[] = [
   { id: 'sm1', productId: '5', productName: 'MD Kist Mango Juice 1L', type: 'out', quantity: 12, reason: 'Sale', date: new Date().toISOString() },

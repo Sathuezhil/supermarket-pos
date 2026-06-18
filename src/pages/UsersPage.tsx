@@ -118,8 +118,8 @@ export function UsersPage() {
             onClick={() => setActiveTab(tab.id)}
             className={`px-4 py-2.5 text-sm font-medium border-b-2 transition-colors ${
               activeTab === tab.id
-                ? 'border-brand-600 text-brand-700'
-                : 'border-transparent text-slate-500 hover:text-slate-700'
+                ? 'border-emerald-600 text-emerald-700'
+                : 'border-transparent text-slate-500 hover:text-slate-300'
             }`}
           >
             {tab.label}
@@ -132,13 +132,13 @@ export function UsersPage() {
           <table className="w-full text-sm">
             <thead className="bg-slate-50 border-b border-slate-200">
               <tr>
-                <th className="px-4 py-3 text-left font-medium text-slate-600">Staff Member</th>
-                <th className="px-4 py-3 text-left font-medium text-slate-600">Username</th>
-                <th className="px-4 py-3 text-left font-medium text-slate-600">Role</th>
-                <th className="px-4 py-3 text-left font-medium text-slate-600">Phone</th>
-                <th className="px-4 py-3 text-left font-medium text-slate-600">Email</th>
-                <th className="px-4 py-3 text-center font-medium text-slate-600">Status</th>
-                <th className="px-4 py-3 text-center font-medium text-slate-600">Actions</th>
+                <th className="px-4 py-3 text-left font-medium text-slate-500">Staff Member</th>
+                <th className="px-4 py-3 text-left font-medium text-slate-500">Username</th>
+                <th className="px-4 py-3 text-left font-medium text-slate-500">Role</th>
+                <th className="px-4 py-3 text-left font-medium text-slate-500">Phone</th>
+                <th className="px-4 py-3 text-left font-medium text-slate-500">Email</th>
+                <th className="px-4 py-3 text-center font-medium text-slate-500">Status</th>
+                <th className="px-4 py-3 text-center font-medium text-slate-500">Actions</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100">
@@ -146,12 +146,12 @@ export function UsersPage() {
                 <tr key={user.id} className="hover:bg-slate-50">
                   <td className="px-4 py-3">
                     <div className="flex items-center gap-3">
-                      <div className="flex h-9 w-9 items-center justify-center rounded-full bg-brand-100 text-brand-700 font-semibold text-sm">
+                      <div className="flex h-9 w-9 items-center justify-center rounded-full bg-emerald-100 text-emerald-600 font-semibold text-sm">
                         {user.fullName.charAt(0)}
                       </div>
                       <div>
                         <p className="font-medium">{user.fullName}</p>
-                        <p className="text-xs text-slate-400">Since {user.createdAt}</p>
+                        <p className="text-xs text-slate-500">Since {user.createdAt}</p>
                       </div>
                     </div>
                   </td>
@@ -173,7 +173,7 @@ export function UsersPage() {
                     )}
                   </td>
                   <td className="px-4 py-3 text-center">
-                    <button onClick={() => openEdit(user)} className="text-slate-500 hover:text-brand-600">
+                    <button onClick={() => openEdit(user)} className="text-slate-500 hover:text-emerald-600">
                       <Pencil className="h-4 w-4 inline" />
                     </button>
                   </td>
@@ -190,7 +190,7 @@ export function UsersPage() {
             <div key={user.id} className="card p-5">
               <div className="flex items-center justify-between mb-3">
                 <div className="flex items-center gap-3">
-                  <Shield className="h-5 w-5 text-brand-600" />
+                  <Shield className="h-5 w-5 text-emerald-600" />
                   <div>
                     <p className="font-semibold">{user.fullName}</p>
                     <p className="text-xs text-slate-500 capitalize">{user.role}</p>
@@ -207,7 +207,7 @@ export function UsersPage() {
                     className={
                       user.permissions.includes(perm.id)
                         ? 'badge-success'
-                        : 'badge bg-slate-100 text-slate-400'
+                        : 'badge bg-slate-50 text-slate-500'
                     }
                   >
                     {perm.label}
@@ -223,13 +223,13 @@ export function UsersPage() {
         <div className="space-y-6">
           {activeShifts.length > 0 && (
             <div>
-              <h3 className="mb-3 font-semibold text-green-700 flex items-center gap-2">
+              <h3 className="mb-3 font-semibold text-emerald-700 flex items-center gap-2">
                 <Clock className="h-5 w-5" />
                 Active Shifts
               </h3>
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 {activeShifts.map((shift) => (
-                  <div key={shift.id} className="card border-green-200 bg-green-50 p-5">
+                  <div key={shift.id} className="card border-emerald-200 bg-emerald-50 p-5">
                     <div className="flex items-center justify-between">
                       <div>
                         <p className="font-semibold">{shift.userName}</p>
@@ -246,7 +246,7 @@ export function UsersPage() {
                       </div>
                       <div>
                         <p className="text-slate-500">Sales So Far</p>
-                        <p className="font-semibold text-green-600">{formatLKR(shift.totalSales)}</p>
+                        <p className="font-semibold text-emerald-600">{formatLKR(shift.totalSales)}</p>
                       </div>
                     </div>
                     <button
@@ -271,13 +271,13 @@ export function UsersPage() {
             <table className="w-full text-sm">
               <thead className="bg-slate-50">
                 <tr>
-                  <th className="px-4 py-2 text-left font-medium text-slate-600">Staff</th>
-                  <th className="px-4 py-2 text-left font-medium text-slate-600">Start</th>
-                  <th className="px-4 py-2 text-left font-medium text-slate-600">End</th>
-                  <th className="px-4 py-2 text-right font-medium text-slate-600">Opening</th>
-                  <th className="px-4 py-2 text-right font-medium text-slate-600">Closing</th>
-                  <th className="px-4 py-2 text-right font-medium text-slate-600">Sales</th>
-                  <th className="px-4 py-2 text-center font-medium text-slate-600">Status</th>
+                  <th className="px-4 py-2 text-left font-medium text-slate-500">Staff</th>
+                  <th className="px-4 py-2 text-left font-medium text-slate-500">Start</th>
+                  <th className="px-4 py-2 text-left font-medium text-slate-500">End</th>
+                  <th className="px-4 py-2 text-right font-medium text-slate-500">Opening</th>
+                  <th className="px-4 py-2 text-right font-medium text-slate-500">Closing</th>
+                  <th className="px-4 py-2 text-right font-medium text-slate-500">Sales</th>
+                  <th className="px-4 py-2 text-center font-medium text-slate-500">Status</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100">

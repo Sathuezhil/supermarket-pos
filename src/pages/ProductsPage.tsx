@@ -90,7 +90,7 @@ export function ProductsPage() {
 
       <div className="mb-4 flex flex-wrap gap-3">
         <div className="relative flex-1 min-w-[200px]">
-          <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
+          <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-500" />
           <input
             type="text"
             value={search}
@@ -115,15 +115,15 @@ export function ProductsPage() {
         <table className="w-full text-sm">
           <thead className="bg-slate-50 border-b border-slate-200">
             <tr>
-              <th className="px-4 py-3 text-left font-medium text-slate-600">Barcode</th>
-              <th className="px-4 py-3 text-left font-medium text-slate-600">Product</th>
-              <th className="px-4 py-3 text-left font-medium text-slate-600">Category</th>
-              <th className="px-4 py-3 text-right font-medium text-slate-600">Cost</th>
-              <th className="px-4 py-3 text-right font-medium text-slate-600">Price</th>
-              <th className="px-4 py-3 text-right font-medium text-slate-600">Margin</th>
-              <th className="px-4 py-3 text-right font-medium text-slate-600">Stock</th>
-              <th className="px-4 py-3 text-center font-medium text-slate-600">Status</th>
-              <th className="px-4 py-3 text-center font-medium text-slate-600">Actions</th>
+              <th className="px-4 py-3 text-left font-medium text-slate-500">Barcode</th>
+              <th className="px-4 py-3 text-left font-medium text-slate-500">Product</th>
+              <th className="px-4 py-3 text-left font-medium text-slate-500">Category</th>
+              <th className="px-4 py-3 text-right font-medium text-slate-500">Cost</th>
+              <th className="px-4 py-3 text-right font-medium text-slate-500">Price</th>
+              <th className="px-4 py-3 text-right font-medium text-slate-500">Margin</th>
+              <th className="px-4 py-3 text-right font-medium text-slate-500">Stock</th>
+              <th className="px-4 py-3 text-center font-medium text-slate-500">Status</th>
+              <th className="px-4 py-3 text-center font-medium text-slate-500">Actions</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-slate-100">
@@ -147,13 +147,13 @@ export function ProductsPage() {
                           className="input w-24 text-right py-1"
                           autoFocus
                         />
-                        <button onClick={() => handlePriceUpdate(product.id)} className="text-green-600 text-xs">Save</button>
-                        <button onClick={() => setPriceEditId(null)} className="text-slate-400 text-xs">Cancel</button>
+                        <button onClick={() => handlePriceUpdate(product.id)} className="text-emerald-600 text-xs">Save</button>
+                        <button onClick={() => setPriceEditId(null)} className="text-slate-500 text-xs">Cancel</button>
                       </div>
                     ) : (
                       <button
                         onClick={() => { setPriceEditId(product.id); setNewPrice(String(product.price)); }}
-                        className="font-semibold text-brand-700 hover:underline flex items-center justify-end gap-1 ml-auto"
+                        className="font-semibold text-emerald-600 hover:underline flex items-center justify-end gap-1 ml-auto"
                       >
                         <Tag className="h-3 w-3" />
                         {formatLKR(product.price)}
@@ -168,7 +168,7 @@ export function ProductsPage() {
                     </span>
                   </td>
                   <td className="px-4 py-3 text-center">
-                    <button onClick={() => openEdit(product)} className="text-slate-500 hover:text-brand-600">
+                    <button onClick={() => openEdit(product)} className="text-slate-500 hover:text-emerald-600">
                       <Pencil className="h-4 w-4 inline" />
                     </button>
                   </td>

@@ -5,25 +5,24 @@ interface StatCardProps {
   value: string | number;
   subtitle?: string;
   icon?: React.ReactNode;
-  trend?: 'up' | 'down' | 'neutral';
   color?: 'green' | 'blue' | 'orange' | 'red' | 'slate';
 }
 
 const colorMap = {
-  green: 'bg-green-50 text-green-700 border-green-200',
-  blue: 'bg-blue-50 text-blue-700 border-blue-200',
-  orange: 'bg-orange-50 text-orange-700 border-orange-200',
-  red: 'bg-red-50 text-red-700 border-red-200',
-  slate: 'bg-slate-50 text-slate-700 border-slate-200',
+  green: 'border-emerald-200 bg-emerald-50 text-emerald-800',
+  blue: 'border-blue-200 bg-blue-50 text-blue-800',
+  orange: 'border-amber-200 bg-amber-50 text-amber-800',
+  red: 'border-red-200 bg-red-50 text-red-800',
+  slate: 'border-slate-200 bg-white text-slate-800',
 };
 
 export function StatCard({ title, value, subtitle, icon, color = 'slate' }: StatCardProps) {
   return (
-    <div className={`card p-5 border ${colorMap[color]}`}>
+    <div className={`card border p-5 ${colorMap[color]}`}>
       <div className="flex items-start justify-between">
         <div>
           <p className="text-sm font-medium opacity-80">{title}</p>
-          <p className="mt-1 text-2xl font-bold">{value}</p>
+          <p className="mt-1 text-2xl font-bold text-slate-900">{value}</p>
           {subtitle && <p className="mt-1 text-xs opacity-70">{subtitle}</p>}
         </div>
         {icon && <div className="opacity-60">{icon}</div>}
@@ -44,8 +43,8 @@ export function PageHeader({
   return (
     <div className="mb-6 flex items-start justify-between">
       <div>
-        <h1 className="text-2xl font-bold text-slate-900">{title}</h1>
-        {subtitle && <p className="mt-1 text-sm text-slate-500">{subtitle}</p>}
+        <h1 className="page-title">{title}</h1>
+        {subtitle && <p className="page-subtitle">{subtitle}</p>}
       </div>
       {action && <div>{action}</div>}
     </div>
@@ -76,11 +75,11 @@ export function Modal({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-      <div className="fixed inset-0 bg-black/50" onClick={onClose} />
+      <div className="fixed inset-0 bg-black/40" onClick={onClose} />
       <div className={`relative w-full ${sizeClass[size]} card p-6 shadow-xl`}>
         <div className="mb-4 flex items-center justify-between">
-          <h2 className="text-lg font-semibold">{title}</h2>
-          <button onClick={onClose} className="text-slate-400 hover:text-slate-600 text-xl leading-none">
+          <h2 className="text-lg font-semibold text-slate-900">{title}</h2>
+          <button onClick={onClose} className="text-xl leading-none text-slate-400 hover:text-slate-600">
             &times;
           </button>
         </div>
