@@ -18,7 +18,11 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | null>(null);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
-  const [session, setSessionState] = useState<AuthSession | null>(() => getSession());
+  const [session, setSessionState] = useState<AuthSession | null>(() => {
+    // Drop legacy localStorage sessions so login shows on each app launch
+    localStorage.removeItem('lanka_pos_session');
+    return getSession();
+  });
 
   const login = useCallback((username: string, password: string) => {
     if (!username.trim() || !password) {

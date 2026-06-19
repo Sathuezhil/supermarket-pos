@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { AlertTriangle, Package, ArrowDownToLine, ArrowUpFromLine, Settings2, Search } from 'lucide-react';
 import { useApp } from '../store/AppContext';
-import { PageHeader, StatCard, Modal, formatLKR } from '../components/ui';
+import { PageHeader, StatCard, Modal, formatLKR, DataTable, Table, TableHead, TableBody, TableRow, TableTh, TableTd } from '../components/ui';
 
 export function InventoryPage() {
   const { products, stockMovements, adjustStock, getLowStockProducts } = useApp();
@@ -100,50 +100,52 @@ export function InventoryPage() {
       </div>
 
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
-        <div className="lg:col-span-2 card overflow-hidden">
-          <div className="border-b border-slate-200 px-4 py-3">
-            <h3 className="font-semibold">Stock Levels</h3>
-          </div>
-          <table className="w-full text-sm">
-            <thead className="bg-slate-50">
-              <tr>
-                <th className="px-4 py-2 text-left font-medium text-slate-500">Product</th>
-                <th className="px-4 py-2 text-left font-medium text-slate-500">Category</th>
-                <th className="px-4 py-2 text-right font-medium text-slate-500">In Stock</th>
-                <th className="px-4 py-2 text-right font-medium text-slate-500">Min Level</th>
-                <th className="px-4 py-2 text-center font-medium text-slate-500">Status</th>
-                <th className="px-4 py-2 text-center font-medium text-slate-500">Action</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-slate-100">
-              {filtered.map((p) => {
-                const isLow = p.stock <= p.minStock;
-                const isCritical = p.stock === 0;
-                return (
-                  <tr key={p.id} className="hover:bg-slate-50">
-                    <td className="px-4 py-2.5 font-medium">{p.name}</td>
-                    <td className="px-4 py-2.5 text-slate-500">{p.category}</td>
-                    <td className="px-4 py-2.5 text-right font-semibold">{p.stock} {p.unit}</td>
-                    <td className="px-4 py-2.5 text-right text-slate-500">{p.minStock}</td>
-                    <td className="px-4 py-2.5 text-center">
-                      {isCritical ? (
-                        <span className="badge-danger">Out of Stock</span>
-                      ) : isLow ? (
-                        <span className="badge-warning">Low Stock</span>
-                      ) : (
-                        <span className="badge-success">OK</span>
-                      )}
-                    </td>
-                    <td className="px-4 py-2.5 text-center">
-                      <button onClick={() => openAdjust(p.id)} className="text-xs text-emerald-600 hover:underline">
-                        Adjust
-                      </button>
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
+        <div className="lg:col-span-2">
+          <DataTable title="Stock Levels">
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableTh>Product</TableTh>
+                  <TableTh>Category</TableTh>
+                  <TableTh align="right">In Stock</TableTh>
+                  <TableTh align="right">Min Level</TableTh>
+                  <TableTh align="center">Status</TableTh>
+                  <TableTh align="center">Action</TableTh>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {filtered.map((p) => {
+                  const isLow = p.stock <= p.minStock;
+                  const isCritical = p.stock === 0;
+                  return (
+                    <TableRow key={p.id}>
+                      <TableTd className="font-medium text-slate-900">{p.name}</TableTd>
+                      <TableTd className="text-slate-500">{p.category}</TableTd>
+                      <TableTd align="right" className="font-semibold">{p.stock} {p.unit}</TableTd>
+                      <TableTd align="right" className="text-slate-500">{p.minStock}</TableTd>
+                      <TableTd align="center">
+                        {isCritical ? (
+                          <span className="badge-danger">Out of Stock</span>
+                        ) : isLow ? (
+                          <span className="badge-warning">Low Stock</span>
+                        ) : (
+                          <span className="badge-success">OK</span>
+                        )}
+                      </TableTd>
+                      <TableTd align="center">
+                        <button
+                          onClick={() => openAdjust(p.id)}
+                          className="rounded-md px-2.5 py-1 text-xs font-medium text-emerald-700 transition-colors hover:bg-emerald-100"
+                        >
+                          Adjust
+                        </button>
+                      </TableTd>
+                    </TableRow>
+                  );
+                })}
+              </TableBody>
+            </Table>
+          </DataTable>
         </div>
 
         <div className="card">

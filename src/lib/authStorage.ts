@@ -43,7 +43,7 @@ export function validateLogin(username: string, password: string): LocalCredenti
 }
 
 export function getSession(): AuthSession | null {
-  const raw = localStorage.getItem(SESSION_KEY);
+  const raw = sessionStorage.getItem(SESSION_KEY);
   if (!raw) return null;
   try {
     return JSON.parse(raw) as AuthSession;
@@ -53,10 +53,12 @@ export function getSession(): AuthSession | null {
 }
 
 export function setSession(session: AuthSession): void {
-  localStorage.setItem(SESSION_KEY, JSON.stringify(session));
+  sessionStorage.setItem(SESSION_KEY, JSON.stringify(session));
 }
 
 export function clearSession(): void {
+  sessionStorage.removeItem(SESSION_KEY);
+  // Clear legacy session from older builds
   localStorage.removeItem(SESSION_KEY);
 }
 

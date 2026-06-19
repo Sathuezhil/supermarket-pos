@@ -13,11 +13,13 @@ import {
   User,
   Star,
   X,
+  Printer,
 } from 'lucide-react';
 import { useApp } from '../store/AppContext';
 import { PageHeader, Modal, formatLKR } from '../components/ui';
+import { BillReceipt } from '../components/BillReceipt';
+import { printBillReceipt } from '../lib/printBill';
 import { PAYMENT_LABELS, type PaymentMethod, type Customer, formatPhoneDisplay, calculateLoyaltyPoints, calculatePointsDiscount, getMaxRedeemablePoints, LOYALTY_POINT_VALUE } from '../types';
-import { STORE_INFO } from '../data/mockData';
 
 export function POSPage() {
   const {
@@ -52,6 +54,7 @@ export function POSPage() {
   const [usePoints, setUsePoints] = useState(false);
   const [pointsToUse, setPointsToUse] = useState(0);
   const barcodeRef = useRef<HTMLInputElement>(null);
+  const receiptRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     barcodeRef.current?.focus();
@@ -158,6 +161,11 @@ export function POSPage() {
       setAmountPaid('');
       handleClearCustomer();
     }
+  };
+
+  const handlePrintBill = () => {
+    if (!completedBill || !receiptRef.current) return;
+    printBillReceipt(receiptRef.current.innerHTML, completedBill.billNo);
   };
 
   const quickAmounts = [100, 500, 1000, 2000, 5000];
@@ -564,92 +572,18 @@ export function POSPage() {
       >
         {completedBill && (
           <div className="space-y-4">
-            <div className="border-b border-dashed border-slate-200 pb-4 text-center text-sm space-y-1">
-              <p className="font-bold">{STORE_INFO.name}</p>
-              <p className="text-slate-500">{STORE_INFO.address}</p>
-              <p className="text-slate-500">Tel: {STORE_INFO.phone}</p>
-              <p className="text-slate-500">VAT No: {STORE_INFO.taxNo}</p>
+            <div ref={receiptRef}>
+              <BillReceipt bill={completedBill} />
             </div>
-            <div className="space-y-1 text-sm">
-              {completedBill.items.map((item) => (
-                <div key={item.product.id} className="flex justify-between">
-                  <span>
-                    {item.product.name} x{item.quantity}
-                  </span>
-                  <span>{formatLKR(item.product.price * item.quantity)}</span>
-                </div>
-              ))}
+            <div className="flex gap-3">
+              <button onClick={handlePrintBill} className="btn-secondary flex-1 py-3">
+                <Printer className="h-4 w-4" />
+                Print Bill
+              </button>
+              <button onClick={() => setCompletedBill(null)} className="btn-primary flex-1 py-3">
+                New Bill
+              </button>
             </div>
-            <div className="border-t border-slate-200 pt-2 space-y-1 text-sm">
-              <div className="flex justify-between">
-                <span>Subtotal</span>
-                <span>{formatLKR(completedBill.subtotal)}</span>
-              </div>
-              {completedBill.discount > 0 && (
-                <div className="flex justify-between text-amber-700">
-                  <span>Points discount</span>
-                  <span>-{formatLKR(completedBill.discount)}</span>
-                </div>
-              )}
-              <div className="flex justify-between">
-                <span>VAT (8%)</span>
-                <span>{formatLKR(completedBill.tax)}</span>
-              </div>
-              <div className="flex justify-between font-bold text-base">
-                <span>Total</span>
-                <span>{formatLKR(completedBill.total)}</span>
-              </div>
-              <div className="flex justify-between">
-                <span>Payment</span>
-                <span>{PAYMENT_LABELS[completedBill.paymentMethod]}</span>
-              </div>
-              {completedBill.change > 0 && (
-                <div className="flex justify-between text-emerald-600">
-                  <span>Change</span>
-                  <span>{formatLKR(completedBill.change)}</span>
-                </div>
-              )}
-              {completedBill.customerName && (
-                <>
-                  <div className="border-t border-slate-100 pt-2 mt-2">
-                    <div className="flex justify-between">
-                      <span>Customer</span>
-                      <span>{completedBill.customerName}</span>
-                    </div>
-                    {completedBill.customerPhone && (
-                      <div className="flex justify-between text-slate-500">
-                        <span>Phone</span>
-                        <span>{formatPhoneDisplay(completedBill.customerPhone)}</span>
-                      </div>
-                    )}
-                    {completedBill.loyaltyPointsUsed != null && completedBill.loyaltyPointsUsed > 0 && (
-                      <div className="flex justify-between text-amber-700 font-medium">
-                        <span>Points Used</span>
-                        <span>-{completedBill.loyaltyPointsUsed} pts</span>
-                      </div>
-                    )}
-                    {completedBill.loyaltyPointsEarned != null && completedBill.loyaltyPointsEarned > 0 && (
-                      <div className="flex justify-between text-amber-700 font-medium">
-                        <span>Points Earned</span>
-                        <span>+{completedBill.loyaltyPointsEarned} pts</span>
-                      </div>
-                    )}
-                    {completedBill.loyaltyPointsBalance != null && (
-                      <div className="flex justify-between text-emerald-600">
-                        <span>Total Points</span>
-                        <span>{completedBill.loyaltyPointsBalance} pts</span>
-                      </div>
-                    )}
-                  </div>
-                </>
-              )}
-            </div>
-            <p className="text-center text-xs text-slate-500">
-              Cashier: {completedBill.cashierName} | {new Date(completedBill.createdAt).toLocaleString('en-LK')}
-            </p>
-            <button onClick={() => setCompletedBill(null)} className="btn-primary w-full">
-              New Bill
-            </button>
           </div>
         )}
       </Modal>

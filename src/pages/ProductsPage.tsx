@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Plus, Pencil, Search, Tag } from 'lucide-react';
 import { useApp } from '../store/AppContext';
-import { PageHeader, Modal, formatLKR } from '../components/ui';
+import { PageHeader, Modal, formatLKR, DataTable, Table, TableHead, TableBody, TableRow, TableTh, TableTd } from '../components/ui';
 import { CATEGORIES, type Product } from '../types';
 
 const emptyProduct = {
@@ -111,33 +111,33 @@ export function ProductsPage() {
         </select>
       </div>
 
-      <div className="card overflow-hidden">
-        <table className="w-full text-sm">
-          <thead className="bg-slate-50 border-b border-slate-200">
-            <tr>
-              <th className="px-4 py-3 text-left font-medium text-slate-500">Barcode</th>
-              <th className="px-4 py-3 text-left font-medium text-slate-500">Product</th>
-              <th className="px-4 py-3 text-left font-medium text-slate-500">Category</th>
-              <th className="px-4 py-3 text-right font-medium text-slate-500">Cost</th>
-              <th className="px-4 py-3 text-right font-medium text-slate-500">Price</th>
-              <th className="px-4 py-3 text-right font-medium text-slate-500">Margin</th>
-              <th className="px-4 py-3 text-right font-medium text-slate-500">Stock</th>
-              <th className="px-4 py-3 text-center font-medium text-slate-500">Status</th>
-              <th className="px-4 py-3 text-center font-medium text-slate-500">Actions</th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-slate-100">
+      <DataTable>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableTh>Barcode</TableTh>
+              <TableTh>Product</TableTh>
+              <TableTh>Category</TableTh>
+              <TableTh align="right">Cost</TableTh>
+              <TableTh align="right">Price</TableTh>
+              <TableTh align="right">Margin</TableTh>
+              <TableTh align="right">Stock</TableTh>
+              <TableTh align="center">Status</TableTh>
+              <TableTh align="center">Actions</TableTh>
+            </TableRow>
+          </TableHead>
+          <TableBody>
             {filtered.map((product) => {
               const margin = product.price > 0 ? ((product.price - product.costPrice) / product.price * 100).toFixed(1) : '0';
               return (
-                <tr key={product.id} className="hover:bg-slate-50">
-                  <td className="px-4 py-3 font-mono text-xs">{product.barcode}</td>
-                  <td className="px-4 py-3">
-                    <div className="font-medium">{product.name}</div>
-                  </td>
-                  <td className="px-4 py-3 text-slate-500">{product.category}</td>
-                  <td className="px-4 py-3 text-right">{formatLKR(product.costPrice)}</td>
-                  <td className="px-4 py-3 text-right">
+                <TableRow key={product.id}>
+                  <TableTd className="font-mono text-xs">{product.barcode}</TableTd>
+                  <TableTd>
+                    <div className="font-medium text-slate-900">{product.name}</div>
+                  </TableTd>
+                  <TableTd className="text-slate-500">{product.category}</TableTd>
+                  <TableTd align="right">{formatLKR(product.costPrice)}</TableTd>
+                  <TableTd align="right">
                     {priceEditId === product.id ? (
                       <div className="flex items-center justify-end gap-1">
                         <input
@@ -159,25 +159,25 @@ export function ProductsPage() {
                         {formatLKR(product.price)}
                       </button>
                     )}
-                  </td>
-                  <td className="px-4 py-3 text-right text-slate-500">{margin}%</td>
-                  <td className="px-4 py-3 text-right">{product.stock} {product.unit}</td>
-                  <td className="px-4 py-3 text-center">
+                  </TableTd>
+                  <TableTd align="right" className="text-slate-500">{margin}%</TableTd>
+                  <TableTd align="right" className="font-medium">{product.stock} {product.unit}</TableTd>
+                  <TableTd align="center">
                     <span className={product.isActive ? 'badge-success' : 'badge-danger'}>
                       {product.isActive ? 'Active' : 'Inactive'}
                     </span>
-                  </td>
-                  <td className="px-4 py-3 text-center">
-                    <button onClick={() => openEdit(product)} className="text-slate-500 hover:text-emerald-600">
+                  </TableTd>
+                  <TableTd align="center">
+                    <button onClick={() => openEdit(product)} className="rounded-lg p-1.5 text-slate-400 transition-colors hover:bg-emerald-100 hover:text-emerald-600">
                       <Pencil className="h-4 w-4 inline" />
                     </button>
-                  </td>
-                </tr>
+                  </TableTd>
+                </TableRow>
               );
             })}
-          </tbody>
-        </table>
-      </div>
+          </TableBody>
+        </Table>
+      </DataTable>
 
       <Modal
         open={modalOpen}

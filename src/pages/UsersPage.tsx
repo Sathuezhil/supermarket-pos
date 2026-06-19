@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Plus, Pencil, Clock, Shield, UserCheck, UserX } from 'lucide-react';
 import { useApp } from '../store/AppContext';
-import { PageHeader, Modal, formatLKR } from '../components/ui';
+import { PageHeader, Modal, formatLKR, DataTable, Table, TableHead, TableBody, TableRow, TableTh, TableTd } from '../components/ui';
 import { PERMISSIONS, type StaffUser, type UserRole } from '../types';
 
 export function UsersPage() {
@@ -128,40 +128,40 @@ export function UsersPage() {
       </div>
 
       {activeTab === 'accounts' && (
-        <div className="card overflow-hidden">
-          <table className="w-full text-sm">
-            <thead className="bg-slate-50 border-b border-slate-200">
-              <tr>
-                <th className="px-4 py-3 text-left font-medium text-slate-500">Staff Member</th>
-                <th className="px-4 py-3 text-left font-medium text-slate-500">Username</th>
-                <th className="px-4 py-3 text-left font-medium text-slate-500">Role</th>
-                <th className="px-4 py-3 text-left font-medium text-slate-500">Phone</th>
-                <th className="px-4 py-3 text-left font-medium text-slate-500">Email</th>
-                <th className="px-4 py-3 text-center font-medium text-slate-500">Status</th>
-                <th className="px-4 py-3 text-center font-medium text-slate-500">Actions</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-slate-100">
+        <DataTable>
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableTh>Staff Member</TableTh>
+                <TableTh>Username</TableTh>
+                <TableTh>Role</TableTh>
+                <TableTh>Phone</TableTh>
+                <TableTh>Email</TableTh>
+                <TableTh align="center">Status</TableTh>
+                <TableTh align="center">Actions</TableTh>
+              </TableRow>
+            </TableHead>
+            <TableBody>
               {staff.map((user) => (
-                <tr key={user.id} className="hover:bg-slate-50">
-                  <td className="px-4 py-3">
+                <TableRow key={user.id}>
+                  <TableTd>
                     <div className="flex items-center gap-3">
                       <div className="flex h-9 w-9 items-center justify-center rounded-full bg-emerald-100 text-emerald-600 font-semibold text-sm">
                         {user.fullName.charAt(0)}
                       </div>
                       <div>
-                        <p className="font-medium">{user.fullName}</p>
+                        <p className="font-medium text-slate-900">{user.fullName}</p>
                         <p className="text-xs text-slate-500">Since {user.createdAt}</p>
                       </div>
                     </div>
-                  </td>
-                  <td className="px-4 py-3 font-mono text-xs">{user.username}</td>
-                  <td className="px-4 py-3">
+                  </TableTd>
+                  <TableTd className="font-mono text-xs">{user.username}</TableTd>
+                  <TableTd>
                     <span className={roleColors[user.role]}>{user.role}</span>
-                  </td>
-                  <td className="px-4 py-3 text-slate-500">{user.phone}</td>
-                  <td className="px-4 py-3 text-slate-500">{user.email}</td>
-                  <td className="px-4 py-3 text-center">
+                  </TableTd>
+                  <TableTd className="text-slate-500">{user.phone}</TableTd>
+                  <TableTd className="text-slate-500">{user.email}</TableTd>
+                  <TableTd align="center">
                     {user.isActive ? (
                       <span className="badge-success flex items-center justify-center gap-1">
                         <UserCheck className="h-3 w-3" /> Active
@@ -171,17 +171,17 @@ export function UsersPage() {
                         <UserX className="h-3 w-3" /> Inactive
                       </span>
                     )}
-                  </td>
-                  <td className="px-4 py-3 text-center">
-                    <button onClick={() => openEdit(user)} className="text-slate-500 hover:text-emerald-600">
+                  </TableTd>
+                  <TableTd align="center">
+                    <button onClick={() => openEdit(user)} className="rounded-lg p-1.5 text-slate-400 transition-colors hover:bg-emerald-100 hover:text-emerald-600">
                       <Pencil className="h-4 w-4 inline" />
                     </button>
-                  </td>
-                </tr>
+                  </TableTd>
+                </TableRow>
               ))}
-            </tbody>
-          </table>
-        </div>
+            </TableBody>
+          </Table>
+        </DataTable>
       )}
 
       {activeTab === 'permissions' && (
@@ -264,45 +264,42 @@ export function UsersPage() {
             </div>
           )}
 
-          <div className="card overflow-hidden">
-            <div className="border-b border-slate-200 px-4 py-3">
-              <h3 className="font-semibold">Shift History</h3>
-            </div>
-            <table className="w-full text-sm">
-              <thead className="bg-slate-50">
-                <tr>
-                  <th className="px-4 py-2 text-left font-medium text-slate-500">Staff</th>
-                  <th className="px-4 py-2 text-left font-medium text-slate-500">Start</th>
-                  <th className="px-4 py-2 text-left font-medium text-slate-500">End</th>
-                  <th className="px-4 py-2 text-right font-medium text-slate-500">Opening</th>
-                  <th className="px-4 py-2 text-right font-medium text-slate-500">Closing</th>
-                  <th className="px-4 py-2 text-right font-medium text-slate-500">Sales</th>
-                  <th className="px-4 py-2 text-center font-medium text-slate-500">Status</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-slate-100">
+          <DataTable title="Shift History">
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableTh>Staff</TableTh>
+                  <TableTh>Start</TableTh>
+                  <TableTh>End</TableTh>
+                  <TableTh align="right">Opening</TableTh>
+                  <TableTh align="right">Closing</TableTh>
+                  <TableTh align="right">Sales</TableTh>
+                  <TableTh align="center">Status</TableTh>
+                </TableRow>
+              </TableHead>
+              <TableBody>
                 {shifts.map((shift) => (
-                  <tr key={shift.id} className="hover:bg-slate-50">
-                    <td className="px-4 py-2 font-medium">{shift.userName}</td>
-                    <td className="px-4 py-2 text-slate-500">{new Date(shift.startTime).toLocaleString('en-LK')}</td>
-                    <td className="px-4 py-2 text-slate-500">
+                  <TableRow key={shift.id}>
+                    <TableTd className="font-medium text-slate-900">{shift.userName}</TableTd>
+                    <TableTd className="text-slate-500">{new Date(shift.startTime).toLocaleString('en-LK')}</TableTd>
+                    <TableTd className="text-slate-500">
                       {shift.endTime ? new Date(shift.endTime).toLocaleString('en-LK') : '-'}
-                    </td>
-                    <td className="px-4 py-2 text-right">{formatLKR(shift.openingCash)}</td>
-                    <td className="px-4 py-2 text-right">
+                    </TableTd>
+                    <TableTd align="right">{formatLKR(shift.openingCash)}</TableTd>
+                    <TableTd align="right">
                       {shift.closingCash != null ? formatLKR(shift.closingCash) : '-'}
-                    </td>
-                    <td className="px-4 py-2 text-right font-medium">{formatLKR(shift.totalSales)}</td>
-                    <td className="px-4 py-2 text-center">
+                    </TableTd>
+                    <TableTd align="right" className="font-medium text-emerald-700">{formatLKR(shift.totalSales)}</TableTd>
+                    <TableTd align="center">
                       <span className={shift.status === 'active' ? 'badge-success' : 'badge-info'}>
                         {shift.status}
                       </span>
-                    </td>
-                  </tr>
+                    </TableTd>
+                  </TableRow>
                 ))}
-              </tbody>
-            </table>
-          </div>
+              </TableBody>
+            </Table>
+          </DataTable>
         </div>
       )}
 

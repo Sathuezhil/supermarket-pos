@@ -54,6 +54,54 @@
   .page-subtitle {
     @apply mt-1 text-sm text-slate-500;
   }
+
+  .table-wrap {
+    @apply overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm;
+  }
+
+  .table-wrap-title {
+    @apply border-b border-emerald-100 bg-gradient-to-r from-emerald-50 to-teal-50 px-5 py-3.5;
+  }
+
+  .table-wrap-title h3 {
+    @apply text-sm font-semibold text-slate-800;
+  }
+
+  .pos-table {
+    @apply w-full text-sm;
+  }
+
+  .pos-table thead {
+    @apply bg-gradient-to-r from-emerald-600 to-teal-600;
+  }
+
+  .pos-table thead th {
+    @apply px-4 py-3.5 text-xs font-semibold uppercase tracking-wider text-white;
+  }
+
+  .pos-table tbody tr {
+    @apply border-b border-slate-100 transition-colors last:border-b-0;
+  }
+
+  .pos-table tbody tr:nth-child(even) {
+    @apply bg-slate-50/70;
+  }
+
+  .pos-table tbody tr:hover {
+    @apply bg-emerald-50/90;
+  }
+
+  .pos-table tbody td {
+    @apply px-4 py-3 text-slate-700;
+  }
+
+  .pos-table tfoot {
+    @apply border-t-2 border-emerald-200 bg-emerald-50 font-semibold;
+  }
+
+  .pos-table tfoot td {
+    @apply px-4 py-3 text-slate-800;
+  }
 }
 
 ::-webkit-scrollbar {

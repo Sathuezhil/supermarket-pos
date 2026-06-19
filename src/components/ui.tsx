@@ -98,4 +98,73 @@ export function EmptyState({ message, icon }: { message: string; icon?: React.Re
   );
 }
 
+type TableAlign = 'left' | 'center' | 'right';
+
+const alignClass: Record<TableAlign, string> = {
+  left: 'text-left',
+  center: 'text-center',
+  right: 'text-right',
+};
+
+export function DataTable({
+  children,
+  title,
+}: {
+  children: React.ReactNode;
+  title?: string;
+}) {
+  return (
+    <div className="table-wrap">
+      {title && (
+        <div className="table-wrap-title">
+          <h3>{title}</h3>
+        </div>
+      )}
+      <div className="overflow-x-auto">{children}</div>
+    </div>
+  );
+}
+
+export function Table({ children }: { children: React.ReactNode }) {
+  return <table className="pos-table">{children}</table>;
+}
+
+export function TableHead({ children }: { children: React.ReactNode }) {
+  return <thead>{children}</thead>;
+}
+
+export function TableBody({ children }: { children: React.ReactNode }) {
+  return <tbody>{children}</tbody>;
+}
+
+export function TableFoot({ children }: { children: React.ReactNode }) {
+  return <tfoot>{children}</tfoot>;
+}
+
+export function TableRow({ children }: { children: React.ReactNode }) {
+  return <tr>{children}</tr>;
+}
+
+export function TableTh({
+  children,
+  align = 'left',
+}: {
+  children: React.ReactNode;
+  align?: TableAlign;
+}) {
+  return <th className={alignClass[align]}>{children}</th>;
+}
+
+export function TableTd({
+  children,
+  align = 'left',
+  className = '',
+}: {
+  children: React.ReactNode;
+  align?: TableAlign;
+  className?: string;
+}) {
+  return <td className={`${alignClass[align]} ${className}`.trim()}>{children}</td>;
+}
+
 export { formatLKR };

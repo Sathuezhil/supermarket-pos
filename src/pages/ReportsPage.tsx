@@ -15,7 +15,7 @@ import {
 } from 'recharts';
 import { TrendingUp, DollarSign, Receipt, Package } from 'lucide-react';
 import { useApp } from '../store/AppContext';
-import { PageHeader, StatCard, formatLKR } from '../components/ui';
+import { PageHeader, StatCard, formatLKR, DataTable, Table, TableHead, TableBody, TableFoot, TableRow, TableTh, TableTd } from '../components/ui';
 import { getEmptyDailySale } from '../lib/appStorage';
 
 const COLORS = ['#22c55e', '#3b82f6', '#f97316', '#ef4444'];
@@ -42,6 +42,8 @@ export function ReportsPage() {
     { name: 'Card', value: dailySales.reduce((s, d) => s + d.card, 0) },
     { name: 'LankaQR', value: dailySales.reduce((s, d) => s + d.lankaqr, 0) },
   ];
+  const paymentTotal = paymentBreakdown.reduce((sum, item) => sum + item.value, 0);
+  const paymentChartData = paymentBreakdown.filter((item) => item.value > 0);
 
   const stockByCategory = products
     .filter((p) => p.isActive)
@@ -137,87 +139,109 @@ export function ReportsPage() {
           <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
             <div className="card p-6">
               <h3 className="mb-4 font-semibold">Payment Method Breakdown</h3>
-              <ResponsiveContainer width="100%" height={250}>
-                <PieChart>
-                  <Pie
-                    data={paymentBreakdown}
-                    cx="50%"
-                    cy="50%"
-                    innerRadius={60}
-                    outerRadius={90}
-                    dataKey="value"
-                    label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
-                  >
-                    {paymentBreakdown.map((_, i) => (
-                      <Cell key={i} fill={COLORS[i % COLORS.length]} />
-                    ))}
-                  </Pie>
-                  <Tooltip formatter={(value: number) => formatLKR(value)} />
-                </PieChart>
-              </ResponsiveContainer>
+              {paymentTotal > 0 ? (
+                <>
+                  <ResponsiveContainer width="100%" height={220}>
+                    <PieChart>
+                      <Pie
+                        data={paymentChartData}
+                        cx="50%"
+                        cy="50%"
+                        innerRadius={55}
+                        outerRadius={85}
+                        dataKey="value"
+                        paddingAngle={paymentChartData.length > 1 ? 2 : 0}
+                      >
+                        {paymentChartData.map((entry) => {
+                          const colorIndex = paymentBreakdown.findIndex((item) => item.name === entry.name);
+                          return (
+                            <Cell key={entry.name} fill={COLORS[colorIndex % COLORS.length]} />
+                          );
+                        })}
+                      </Pie>
+                      <Tooltip formatter={(value: number) => formatLKR(value)} />
+                    </PieChart>
+                  </ResponsiveContainer>
+                  <div className="mt-2 space-y-2 border-t border-slate-100 pt-4">
+                    {paymentBreakdown.map((item, i) => {
+                      const percent = paymentTotal > 0 ? ((item.value / paymentTotal) * 100).toFixed(0) : '0';
+                      return (
+                        <div key={item.name} className="flex items-center justify-between text-sm">
+                          <span className="flex items-center gap-2 text-slate-700">
+                            <span
+                              className="h-3 w-3 shrink-0 rounded-full"
+                              style={{ backgroundColor: COLORS[i % COLORS.length] }}
+                            />
+                            {item.name}
+                          </span>
+                          <span className="text-slate-600">
+                            {formatLKR(item.value)} ({percent}%)
+                          </span>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </>
+              ) : (
+                <p className="py-16 text-center text-sm text-slate-500">No payment data for this period</p>
+              )}
             </div>
 
-            <div className="card overflow-hidden">
-              <div className="border-b border-slate-200 px-4 py-3">
-                <h3 className="font-semibold">Daily Sales Detail</h3>
-              </div>
-              <table className="w-full text-sm">
-                <thead className="bg-slate-50">
-                  <tr>
-                    <th className="px-4 py-2 text-left font-medium text-slate-500">Date</th>
-                    <th className="px-4 py-2 text-right font-medium text-slate-500">Bills</th>
-                    <th className="px-4 py-2 text-right font-medium text-slate-500">Revenue</th>
-                    <th className="px-4 py-2 text-right font-medium text-slate-500">Cash</th>
-                    <th className="px-4 py-2 text-right font-medium text-slate-500">Card</th>
-                    <th className="px-4 py-2 text-right font-medium text-slate-500">QR</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-slate-100">
+            <DataTable title="Daily Sales Detail">
+              <Table>
+                <TableHead>
+                  <TableRow>
+                    <TableTh>Date</TableTh>
+                    <TableTh align="right">Bills</TableTh>
+                    <TableTh align="right">Revenue</TableTh>
+                    <TableTh align="right">Cash</TableTh>
+                    <TableTh align="right">Card</TableTh>
+                    <TableTh align="right">QR</TableTh>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
                   {[...dailySales].reverse().map((d) => (
-                    <tr key={d.date} className="hover:bg-slate-50">
-                      <td className="px-4 py-2">{d.date}</td>
-                      <td className="px-4 py-2 text-right">{d.bills}</td>
-                      <td className="px-4 py-2 text-right font-medium">{formatLKR(d.revenue)}</td>
-                      <td className="px-4 py-2 text-right text-slate-500">{formatLKR(d.cash)}</td>
-                      <td className="px-4 py-2 text-right text-slate-500">{formatLKR(d.card)}</td>
-                      <td className="px-4 py-2 text-right text-slate-500">{formatLKR(d.lankaqr)}</td>
-                    </tr>
+                    <TableRow key={d.date}>
+                      <TableTd className="font-medium">{d.date}</TableTd>
+                      <TableTd align="right">{d.bills}</TableTd>
+                      <TableTd align="right" className="font-semibold text-slate-900">{formatLKR(d.revenue)}</TableTd>
+                      <TableTd align="right" className="text-slate-500">{formatLKR(d.cash)}</TableTd>
+                      <TableTd align="right" className="text-slate-500">{formatLKR(d.card)}</TableTd>
+                      <TableTd align="right" className="text-slate-500">{formatLKR(d.lankaqr)}</TableTd>
+                    </TableRow>
                   ))}
-                </tbody>
-              </table>
-            </div>
+                </TableBody>
+              </Table>
+            </DataTable>
           </div>
 
           {bills.length > 0 && (
-            <div className="card overflow-hidden">
-              <div className="border-b border-slate-200 px-4 py-3">
-                <h3 className="font-semibold">Today's Bills (Live)</h3>
-              </div>
-              <table className="w-full text-sm">
-                <thead className="bg-slate-50">
-                  <tr>
-                    <th className="px-4 py-2 text-left font-medium text-slate-500">Bill No</th>
-                    <th className="px-4 py-2 text-left font-medium text-slate-500">Cashier</th>
-                    <th className="px-4 py-2 text-right font-medium text-slate-500">Items</th>
-                    <th className="px-4 py-2 text-right font-medium text-slate-500">Total</th>
-                    <th className="px-4 py-2 text-left font-medium text-slate-500">Payment</th>
-                    <th className="px-4 py-2 text-left font-medium text-slate-500">Time</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-slate-100">
+            <DataTable title="Today's Bills (Live)">
+              <Table>
+                <TableHead>
+                  <TableRow>
+                    <TableTh>Bill No</TableTh>
+                    <TableTh>Cashier</TableTh>
+                    <TableTh align="right">Items</TableTh>
+                    <TableTh align="right">Total</TableTh>
+                    <TableTh>Payment</TableTh>
+                    <TableTh>Time</TableTh>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
                   {bills.map((b) => (
-                    <tr key={b.id} className="hover:bg-slate-50">
-                      <td className="px-4 py-2 font-mono text-xs">{b.billNo}</td>
-                      <td className="px-4 py-2">{b.cashierName}</td>
-                      <td className="px-4 py-2 text-right">{b.items.length}</td>
-                      <td className="px-4 py-2 text-right font-medium">{formatLKR(b.total)}</td>
-                      <td className="px-4 py-2 capitalize">{b.paymentMethod}</td>
-                      <td className="px-4 py-2 text-slate-500">{new Date(b.createdAt).toLocaleTimeString('en-LK')}</td>
-                    </tr>
+                    <TableRow key={b.id}>
+                      <TableTd className="font-mono text-xs">{b.billNo}</TableTd>
+                      <TableTd>{b.cashierName}</TableTd>
+                      <TableTd align="right">{b.items.length}</TableTd>
+                      <TableTd align="right" className="font-semibold text-emerald-700">{formatLKR(b.total)}</TableTd>
+                      <TableTd className="capitalize">{b.paymentMethod}</TableTd>
+                      <TableTd className="text-slate-500">{new Date(b.createdAt).toLocaleTimeString('en-LK')}</TableTd>
+                    </TableRow>
                   ))}
-                </tbody>
-              </table>
-            </div>
+                </TableBody>
+              </Table>
+            </DataTable>
           )}
         </div>
       )}
@@ -238,46 +262,43 @@ export function ReportsPage() {
             </ResponsiveContainer>
           </div>
 
-          <div className="card overflow-hidden">
-            <div className="border-b border-slate-200 px-4 py-3">
-              <h3 className="font-semibold">Profit Analysis by Day</h3>
-            </div>
-            <table className="w-full text-sm">
-              <thead className="bg-slate-50">
-                <tr>
-                  <th className="px-4 py-2 text-left font-medium text-slate-500">Date</th>
-                  <th className="px-4 py-2 text-right font-medium text-slate-500">Revenue</th>
-                  <th className="px-4 py-2 text-right font-medium text-slate-500">Profit</th>
-                  <th className="px-4 py-2 text-right font-medium text-slate-500">Margin %</th>
-                  <th className="px-4 py-2 text-right font-medium text-slate-500">Avg Bill</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-slate-100">
+          <DataTable title="Profit Analysis by Day">
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableTh>Date</TableTh>
+                  <TableTh align="right">Revenue</TableTh>
+                  <TableTh align="right">Profit</TableTh>
+                  <TableTh align="right">Margin %</TableTh>
+                  <TableTh align="right">Avg Bill</TableTh>
+                </TableRow>
+              </TableHead>
+              <TableBody>
                 {[...dailySales].reverse().map((d) => (
-                  <tr key={d.date} className="hover:bg-slate-50">
-                    <td className="px-4 py-2">{d.date}</td>
-                    <td className="px-4 py-2 text-right">{formatLKR(d.revenue)}</td>
-                    <td className="px-4 py-2 text-right font-medium text-emerald-600">{formatLKR(d.profit)}</td>
-                    <td className="px-4 py-2 text-right">{marginPercent(d.profit, d.revenue)}%</td>
-                    <td className="px-4 py-2 text-right text-slate-500">
+                  <TableRow key={d.date}>
+                    <TableTd className="font-medium">{d.date}</TableTd>
+                    <TableTd align="right">{formatLKR(d.revenue)}</TableTd>
+                    <TableTd align="right" className="font-medium text-emerald-600">{formatLKR(d.profit)}</TableTd>
+                    <TableTd align="right">{marginPercent(d.profit, d.revenue)}%</TableTd>
+                    <TableTd align="right" className="text-slate-500">
                       {formatLKR(d.bills > 0 ? d.revenue / d.bills : 0)}
-                    </td>
-                  </tr>
+                    </TableTd>
+                  </TableRow>
                 ))}
-              </tbody>
-              <tfoot className="bg-slate-50 font-semibold">
-                <tr>
-                  <td className="px-4 py-2">Week Total</td>
-                  <td className="px-4 py-2 text-right">{formatLKR(weekRevenue)}</td>
-                  <td className="px-4 py-2 text-right text-emerald-600">{formatLKR(weekProfit)}</td>
-                  <td className="px-4 py-2 text-right">{marginPercent(weekProfit, weekRevenue)}%</td>
-                  <td className="px-4 py-2 text-right text-slate-500">
+              </TableBody>
+              <TableFoot>
+                <TableRow>
+                  <TableTd>Week Total</TableTd>
+                  <TableTd align="right">{formatLKR(weekRevenue)}</TableTd>
+                  <TableTd align="right" className="text-emerald-700">{formatLKR(weekProfit)}</TableTd>
+                  <TableTd align="right">{marginPercent(weekProfit, weekRevenue)}%</TableTd>
+                  <TableTd align="right" className="text-slate-500">
                     {formatLKR(weekBills > 0 ? weekRevenue / weekBills : 0)}
-                  </td>
-                </tr>
-              </tfoot>
-            </table>
-          </div>
+                  </TableTd>
+                </TableRow>
+              </TableFoot>
+            </Table>
+          </DataTable>
         </div>
       )}
 
@@ -296,33 +317,30 @@ export function ReportsPage() {
             </ResponsiveContainer>
           </div>
 
-          <div className="card overflow-hidden">
-            <div className="border-b border-slate-200 px-4 py-3">
-              <h3 className="font-semibold">Stock Value by Category</h3>
-            </div>
-            <table className="w-full text-sm">
-              <thead className="bg-slate-50">
-                <tr>
-                  <th className="px-4 py-2 text-left font-medium text-slate-500">Category</th>
-                  <th className="px-4 py-2 text-right font-medium text-slate-500">Total Units</th>
-                  <th className="px-4 py-2 text-right font-medium text-slate-500">Stock Value</th>
-                  <th className="px-4 py-2 text-right font-medium text-slate-500">Products</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-slate-100">
+          <DataTable title="Stock Value by Category">
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableTh>Category</TableTh>
+                  <TableTh align="right">Total Units</TableTh>
+                  <TableTh align="right">Stock Value</TableTh>
+                  <TableTh align="right">Products</TableTh>
+                </TableRow>
+              </TableHead>
+              <TableBody>
                 {Object.entries(stockByCategory).map(([cat, data]) => (
-                  <tr key={cat} className="hover:bg-slate-50">
-                    <td className="px-4 py-2 font-medium">{cat}</td>
-                    <td className="px-4 py-2 text-right">{data.count}</td>
-                    <td className="px-4 py-2 text-right">{formatLKR(data.value)}</td>
-                    <td className="px-4 py-2 text-right text-slate-500">
+                  <TableRow key={cat}>
+                    <TableTd className="font-medium text-slate-900">{cat}</TableTd>
+                    <TableTd align="right">{data.count}</TableTd>
+                    <TableTd align="right" className="font-semibold">{formatLKR(data.value)}</TableTd>
+                    <TableTd align="right" className="text-slate-500">
                       {products.filter((p) => p.category === cat && p.isActive).length}
-                    </td>
-                  </tr>
+                    </TableTd>
+                  </TableRow>
                 ))}
-              </tbody>
-            </table>
-          </div>
+              </TableBody>
+            </Table>
+          </DataTable>
         </div>
       )}
     </div>
