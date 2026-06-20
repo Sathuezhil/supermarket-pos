@@ -9,7 +9,7 @@ interface BillReceiptProps {
 
 export function BillReceipt({ bill }: BillReceiptProps) {
   return (
-    <div className="bill-receipt space-y-3 text-sm">
+    <div className="bill-receipt space-y-3 px-6 text-sm">
       <div className="border-b border-dashed border-slate-300 pb-3 text-center space-y-0.5">
         <p className="text-base font-bold">{STORE_INFO.name}</p>
         <p className="text-slate-600">{STORE_INFO.address}</p>

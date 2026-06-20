@@ -9,7 +9,7 @@ const RECEIPT_PRINT_STYLES = `
     margin: 0 auto;
     padding: 8px;
   }
-  .bill-receipt { width: 100%; }
+  .bill-receipt { width: 100%; padding-left: 24px; padding-right: 24px; }
   .bill-receipt > * + * { margin-top: 10px; }
   .text-center { text-align: center; }
   .font-bold { font-weight: 700; }

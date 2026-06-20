@@ -1,16 +1,13 @@
 {
   "name": "supermarket-pos",
   "version": "1.0.0",
-  "description": "Sri Lankan Supermarket POS System - Frontend",
-  "main": "electron/main.cjs",
+  "description": "Sri Lankan Supermarket POS System - Web App",
   "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview",
-    "electron": "electron .",
-    "electron:dev": "concurrently \"vite\" \"wait-on http://localhost:5173 && electron .\"",
-    "start": "npm run electron:dev"
+    "start": "vite"
   },
   "dependencies": {
     "lucide-react": "^0.468.0",
@@ -24,12 +21,9 @@
     "@types/react-dom": "^18.3.1",
     "@vitejs/plugin-react": "^4.3.4",
     "autoprefixer": "^10.4.20",
-    "concurrently": "^9.1.0",
-    "electron": "^33.2.0",
     "postcss": "^8.4.49",
     "tailwindcss": "^3.4.16",
     "typescript": "^5.7.2",
-    "vite": "^6.0.3",
-    "wait-on": "^8.0.1"
+    "vite": "^6.0.3"
   }
 }

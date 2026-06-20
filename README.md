@@ -1,8 +1,8 @@
 # Lanka Supermarket POS System
 
-Sri Lankan supermarket Point of Sale (POS) system built with **Electron + React + TypeScript**.
+Sri Lankan supermarket Point of Sale (POS) system built with **React + TypeScript**.
 
-Frontend-only application with mock data for demonstration.
+Frontend-only web application with mock data for demonstration.
 
 ## Features
 
@@ -37,7 +37,6 @@ Frontend-only application with mock data for demonstration.
 
 ## Tech Stack
 
-- **Electron** - Desktop app
 - **React 18** + **TypeScript**
 - **Vite** - Build tool
 - **Tailwind CSS** - Styling
@@ -50,15 +49,14 @@ Frontend-only application with mock data for demonstration.
 # Install dependencies
 npm install
 
-# Run in browser (development)
+# Run development server (opens at http://localhost:5173)
 npm run dev
-
-# Run as Electron desktop app
-npm start
 
 # Build for production
 npm run build
-npm run electron
+
+# Preview production build locally
+npm run preview
 ```
 
 ## Demo Data
