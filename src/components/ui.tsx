@@ -41,12 +41,12 @@ export function PageHeader({
   action?: React.ReactNode;
 }) {
   return (
-    <div className="mb-6 flex items-start justify-between">
-      <div>
+    <div className="mb-4 flex flex-col gap-3 sm:mb-6 sm:flex-row sm:items-start sm:justify-between">
+      <div className="min-w-0">
         <h1 className="page-title">{title}</h1>
         {subtitle && <p className="page-subtitle">{subtitle}</p>}
       </div>
-      {action && <div>{action}</div>}
+      {action && <div className="shrink-0">{action}</div>}
     </div>
   );
 }
@@ -74,16 +74,21 @@ export function Modal({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+    <div className="fixed inset-0 z-[60] flex items-end justify-center p-0 sm:items-center sm:p-4">
       <div className="fixed inset-0 bg-black/40" onClick={onClose} />
-      <div className={`relative w-full ${sizeClass[size]} card p-6 shadow-xl`}>
-        <div className="mb-4 flex items-center justify-between">
-          <h2 className="text-lg font-semibold text-slate-900">{title}</h2>
-          <button onClick={onClose} className="text-xl leading-none text-slate-400 hover:text-slate-600">
+      <div
+        className={`relative flex max-h-[92dvh] w-full flex-col ${sizeClass[size]} card rounded-b-none shadow-xl sm:max-h-[90dvh] sm:rounded-xl sm:p-6`}
+      >
+        <div className="flex shrink-0 items-center justify-between border-b border-slate-100 px-4 py-3 sm:border-0 sm:px-0 sm:pb-0 sm:pt-0">
+          <h2 className="pr-4 text-base font-semibold text-slate-900 sm:text-lg">{title}</h2>
+          <button
+            onClick={onClose}
+            className="shrink-0 rounded-lg p-1 text-xl leading-none text-slate-400 hover:bg-slate-100 hover:text-slate-600"
+          >
             &times;
           </button>
         </div>
-        {children}
+        <div className="overflow-y-auto px-4 py-4 sm:px-0 sm:py-0 sm:pt-4">{children}</div>
       </div>
     </div>
   );

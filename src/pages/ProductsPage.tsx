@@ -102,7 +102,7 @@ export function ProductsPage() {
         <select
           value={categoryFilter}
           onChange={(e) => setCategoryFilter(e.target.value)}
-          className="input w-auto"
+          className="input w-full sm:w-auto"
         >
           <option value="all">All Categories</option>
           {CATEGORIES.map((c) => (
@@ -185,7 +185,7 @@ export function ProductsPage() {
         title={editing ? 'Edit Product' : 'Add New Product'}
         size="lg"
       >
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <div>
             <label className="label">Barcode</label>
             <input className="input font-mono" value={form.barcode} onChange={(e) => setForm({ ...form, barcode: e.target.value })} />
@@ -196,7 +196,7 @@ export function ProductsPage() {
               {CATEGORIES.map((c) => <option key={c} value={c}>{c}</option>)}
             </select>
           </div>
-          <div className="col-span-2">
+          <div className="col-span-1 sm:col-span-2">
             <label className="label">Product Name</label>
             <input className="input" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} />
           </div>
@@ -231,7 +231,7 @@ export function ProductsPage() {
             </label>
           </div>
         </div>
-        <div className="mt-6 flex justify-end gap-3">
+        <div className="mt-6 flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
           <button onClick={() => setModalOpen(false)} className="btn-secondary">Cancel</button>
           <button onClick={handleSave} className="btn-primary">{editing ? 'Update' : 'Add Product'}</button>
         </div>

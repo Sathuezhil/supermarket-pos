@@ -111,15 +111,15 @@ export function UsersPage() {
         }
       />
 
-      <div className="mb-4 flex gap-2 border-b border-slate-200">
+      <div className="tab-bar">
         {tabs.map((tab) => (
           <button
             key={tab.id}
             onClick={() => setActiveTab(tab.id)}
-            className={`px-4 py-2.5 text-sm font-medium border-b-2 transition-colors ${
+            className={`tab-btn ${
               activeTab === tab.id
                 ? 'border-emerald-600 text-emerald-700'
-                : 'border-transparent text-slate-500 hover:text-slate-300'
+                : 'border-transparent text-slate-500 hover:text-slate-700'
             }`}
           >
             {tab.label}
@@ -310,7 +310,7 @@ export function UsersPage() {
         title={editing ? 'Edit Staff' : 'Add Staff Member'}
         size="lg"
       >
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <div>
             <label className="label">Full Name</label>
             <input className="input" value={form.fullName} onChange={(e) => setForm({ ...form, fullName: e.target.value })} />
@@ -341,9 +341,9 @@ export function UsersPage() {
               <span className="text-sm">Active</span>
             </label>
           </div>
-          <div className="col-span-2">
+          <div className="col-span-1 sm:col-span-2">
             <label className="label">Permissions</label>
-            <div className="grid grid-cols-2 gap-2">
+            <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
               {PERMISSIONS.map((perm) => (
                 <label key={perm.id} className="flex items-center gap-2 rounded-lg border border-slate-200 p-2 cursor-pointer hover:bg-slate-50">
                   <input

@@ -104,15 +104,15 @@ export function ReportsPage() {
         />
       </div>
 
-      <div className="mb-4 flex gap-2 border-b border-slate-200">
+      <div className="tab-bar">
         {tabs.map((tab) => (
           <button
             key={tab.id}
             onClick={() => setActiveTab(tab.id)}
-            className={`px-4 py-2.5 text-sm font-medium border-b-2 transition-colors ${
+            className={`tab-btn ${
               activeTab === tab.id
                 ? 'border-emerald-600 text-emerald-700'
-                : 'border-transparent text-slate-500 hover:text-slate-300'
+                : 'border-transparent text-slate-500 hover:text-slate-700'
             }`}
           >
             {tab.label}
@@ -122,9 +122,9 @@ export function ReportsPage() {
 
       {activeTab === 'sales' && (
         <div className="space-y-6">
-          <div className="card p-6">
+          <div className="card p-4 sm:p-6">
             <h3 className="mb-4 font-semibold">Daily Sales - Last 7 Days</h3>
-            <ResponsiveContainer width="100%" height={300}>
+            <ResponsiveContainer width="100%" height={260}>
               <BarChart data={dailySales}>
                 <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
                 <XAxis dataKey="date" tick={{ fontSize: 12 }} tickFormatter={(d) => d.slice(5)} />

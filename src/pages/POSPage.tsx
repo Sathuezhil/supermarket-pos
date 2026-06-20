@@ -182,7 +182,7 @@ export function POSPage() {
         <div className="lg:col-span-2 space-y-4">
           {/* Barcode Scanner */}
           <div className="card p-4">
-            <form onSubmit={handleBarcodeSubmit} className="flex gap-3">
+            <form onSubmit={handleBarcodeSubmit} className="flex flex-col gap-3 sm:flex-row">
               <div className="relative flex-1">
                 <ScanBarcode className="absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-emerald-600" />
                 <input
@@ -191,11 +191,11 @@ export function POSPage() {
                   value={barcode}
                   onChange={(e) => setBarcode(e.target.value)}
                   placeholder="Scan or enter barcode..."
-                  className="input pl-10 text-lg font-mono"
+                  className="input pl-10 text-base font-mono sm:text-lg"
                   autoFocus
                 />
               </div>
-              <button type="submit" className="btn-primary px-6">
+              <button type="submit" className="btn-primary w-full px-6 sm:w-auto">
                 Add
               </button>
             </form>
@@ -246,8 +246,8 @@ export function POSPage() {
               <User className="h-4 w-4 text-emerald-600" />
               Customer
             </h3>
-            <div className="flex gap-2">
-              <div className="relative flex-1">
+            <div className="flex flex-col gap-2 sm:flex-row sm:flex-wrap">
+              <div className="relative min-w-0 flex-1">
                 <Phone className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
                 <input
                   type="tel"
@@ -258,14 +258,16 @@ export function POSPage() {
                   className="input pl-9"
                 />
               </div>
-              <button type="button" onClick={handleLookupCustomer} className="btn-primary px-4">
-                Lookup
-              </button>
-              {(selectedCustomer || customerPhone) && (
-                <button type="button" onClick={handleClearCustomer} className="btn-secondary px-3">
-                  <X className="h-4 w-4" />
+              <div className="flex gap-2">
+                <button type="button" onClick={handleLookupCustomer} className="btn-primary flex-1 px-4 sm:flex-none">
+                  Lookup
                 </button>
-              )}
+                {(selectedCustomer || customerPhone) && (
+                  <button type="button" onClick={handleClearCustomer} className="btn-secondary px-3">
+                    <X className="h-4 w-4" />
+                  </button>
+                )}
+              </div>
             </div>
 
             {customerError && (
@@ -275,13 +277,13 @@ export function POSPage() {
             )}
 
             {showNewCustomerForm && (
-              <div className="mt-3 flex gap-2">
+              <div className="mt-3 flex flex-col gap-2 sm:flex-row">
                 <input
                   type="text"
                   value={newCustomerName}
                   onChange={(e) => setNewCustomerName(e.target.value)}
                   placeholder="Customer full name"
-                  className="input flex-1"
+                  className="input min-w-0 flex-1"
                 />
                 <button type="button" onClick={handleRegisterCustomer} className="btn-secondary whitespace-nowrap">
                   Register
@@ -372,7 +374,7 @@ export function POSPage() {
             )}
           </div>
 
-          <div className="card flex flex-col" style={{ maxHeight: 'calc(100vh - 340px)' }}>
+          <div className="card flex flex-col max-h-[55vh] lg:max-h-[calc(100vh-340px)]">
             <div className="border-b border-slate-200 p-4">
               <div className="flex items-center justify-between">
                 <h2 className="font-semibold flex items-center gap-2">
@@ -575,7 +577,7 @@ export function POSPage() {
             <div ref={receiptRef}>
               <BillReceipt bill={completedBill} />
             </div>
-            <div className="flex gap-3">
+            <div className="flex flex-col gap-3 sm:flex-row">
               <button onClick={handlePrintBill} className="btn-secondary flex-1 py-3">
                 <Printer className="h-4 w-4" />
                 Print Bill

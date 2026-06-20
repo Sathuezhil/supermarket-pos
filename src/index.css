@@ -49,7 +49,7 @@
     @apply badge bg-blue-100 text-blue-800;
   }
   .page-title {
-    @apply text-2xl font-bold text-slate-900;
+    @apply text-xl font-bold text-slate-900 sm:text-2xl;
   }
   .page-subtitle {
     @apply mt-1 text-sm text-slate-500;
@@ -68,7 +68,21 @@
   }
 
   .pos-table {
-    @apply w-full text-sm;
+    @apply w-full min-w-[36rem] text-sm;
+  }
+
+  .tab-bar {
+    @apply -mx-4 mb-4 flex gap-1 overflow-x-auto border-b border-slate-200 px-4 sm:mx-0 sm:gap-2 sm:px-0;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+
+  .tab-bar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .tab-btn {
+    @apply shrink-0 border-b-2 px-3 py-2.5 text-sm font-medium transition-colors sm:px-4;
   }
 
   .pos-table thead {
@@ -76,7 +90,7 @@
   }
 
   .pos-table thead th {
-    @apply px-4 py-3.5 text-xs font-semibold uppercase tracking-wider text-white;
+    @apply px-3 py-3 text-[10px] font-semibold uppercase tracking-wider text-white sm:px-4 sm:py-3.5 sm:text-xs;
   }
 
   .pos-table tbody tr {
@@ -92,7 +106,7 @@
   }
 
   .pos-table tbody td {
-    @apply px-4 py-3 text-slate-700;
+    @apply px-3 py-2.5 text-slate-700 sm:px-4 sm:py-3;
   }
 
   .pos-table tfoot {
